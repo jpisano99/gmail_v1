@@ -7,8 +7,9 @@ from settings import app
 
 
 userName = 'jpisano99@gmail.com'
+
+#gmail password is a token from the "app_passwords" google security screen
 passwd = app['PASSWORD']
-print(passwd)
 gmail = imaplib.IMAP4_SSL('imap.gmail.com', 993)
 
 #typ, accountDetails = gmail.login(userName, passwd)
