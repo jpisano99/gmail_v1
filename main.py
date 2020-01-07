@@ -5,23 +5,39 @@ import sys
 import time
 from settings import app
 
-
+# Account name and Google App Token
 userName = 'jpisano99@gmail.com'
+my_token = app['GMAIL_TOKEN']
 
-#gmail password is a token from the "app_passwords" google security screen
-passwd = app['PASSWORD']
+# Authenticate and Create the email object
 gmail = imaplib.IMAP4_SSL('imap.gmail.com', 993)
 
-#typ, accountDetails = gmail.login(userName, passwd)
-#print (typ,accountDetails)
+# Login
+status, accountDetails = gmail.login(userName, my_token)
+print(status, accountDetails[0].decode('utf-8'))
 
-gmail.select("Netgear_Logfiles")
-#gmail.select("Inbox")
+# Select and Inbox to read
+num_of_emails = gmail.select("Netgear_Logfiles")
+
+
+
+
+print (status, accountDetails[0].decode('utf-8'))
+
+
+
+
+
+# print (num_of_emails[0], str(num_of_emails[1].decode("utf-8")))
+
+
+exit()
+# gmail.select("Inbox")
 typ, data = gmail.search(None, 'ALL')
 
-print (typ,'Num of emails: ',len(data[0].split()))
-print('Data: ',len(data))
-print('Data 0: ',data[0])
+print (typ, 'Num of emails: ', len(data[0].split()))
+print('Data: ', len(data))
+print('Data 0: ', data[0])
 
 for msgId in data[0].split():
     typ, messageParts = gmail.fetch(msgId, '(RFC822)')
@@ -43,10 +59,9 @@ for msgId in data[0].split():
     print('subject: ',subject)
     print('date: ',date)
     print('payload: ',payload)
-    #print('payload: ',payload.split('\n'))
+    # print('payload: ',payload.split('\n'))
 
-
-    for line in payload.split('\n'):
+    for line in payload.split():
         if '[Admin login]'  in line:
             print (line)
         elif '[LAN access from remote]' in line:
